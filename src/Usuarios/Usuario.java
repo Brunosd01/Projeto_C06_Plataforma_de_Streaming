@@ -1,5 +1,7 @@
 package Usuarios;
 
+import Conteudos.Catalogo;
+
 public abstract class Usuario {
     protected String nome;
     protected String email;
@@ -10,4 +12,8 @@ public abstract class Usuario {
         this.email = email;
         this.senha = senha;
     }
+
+    public void autenticar() {}
+
+    public abstract void exibirMenu(Catalogo catalogo);
 }
