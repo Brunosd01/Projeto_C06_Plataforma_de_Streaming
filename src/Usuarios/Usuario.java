@@ -1,5 +1,7 @@
 package Usuarios;
 
+import Conteudos.Catalogo;
+
 public abstract class Usuario {
     protected String nome;
     protected String email;
@@ -10,12 +12,8 @@ public abstract class Usuario {
         this.email = email;
         this.senha = senha;
     }
-    public boolean autenticar(String senhaDigitada) {
-        // Compara a senha salva no objeto com a senha que o usuário digitou no login
-        return this.senha.equals(senhaDigitada);
-    }
 
-    public String getEmail() {
-        return this.email;
-    }
+    public void autenticar() {}
+
+    public abstract void exibirMenu(Catalogo catalogo);
 }
