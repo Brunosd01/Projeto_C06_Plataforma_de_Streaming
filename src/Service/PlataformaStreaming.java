@@ -38,4 +38,8 @@ public class PlataformaStreaming {
         arquivos.salvarCatalogo(this.catalogo);
         arquivos.salvarUsuarios(this.usuarios.values());
     }
+
+    public Catalogo getCatalogo() {
+        return this.catalogo;
+    }
 }

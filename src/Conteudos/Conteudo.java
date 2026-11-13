@@ -9,7 +9,13 @@ public abstract class Conteudo implements Avaliavel{
     protected double notaMedia;
     protected int totalAvaliacoes;
 
+    // 1. Criamos um contador estático que pertence à classe inteira
+    private static int contadorId = 1;
+
     public Conteudo(String titulo, String genero, int anoLancamento, String diretor) {
+        // 2. Toda vez que um Filme ou Série nascer, ele recebe o número atual e aumenta 1
+        this.id = contadorId++;
+
         this.titulo = titulo;
         this.genero = genero;
         this.anoLancamento = anoLancamento;

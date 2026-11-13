@@ -1,0 +1,2 @@
+Chefao;admin@plataforma.com;senha123
+Diretoria;diretor@plataforma.com;admin456

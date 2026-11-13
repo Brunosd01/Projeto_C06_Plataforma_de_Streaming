@@ -2,6 +2,8 @@ package Usuarios;
 
 import Conteudos.Catalogo;
 
+import java.util.Scanner;
+
 public abstract class Usuario {
     protected String nome;
     protected String email;
@@ -19,7 +21,7 @@ public abstract class Usuario {
         return this.senha.equals(senhaDigitada);
     }
 
-    public abstract void exibirMenu(Catalogo catalogo);
+    public abstract void exibirMenu(Catalogo catalogo, Scanner scanner);
 
     public String getEmail() {
         return email;

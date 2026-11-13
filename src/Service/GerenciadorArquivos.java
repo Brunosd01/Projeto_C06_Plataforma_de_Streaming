@@ -1,11 +1,15 @@
 package Service;
+
 import Conteudos.Catalogo;
+import Usuarios.Administrador;
+import Usuarios.Assinante;
 import Usuarios.Usuario;
-
-
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
 
 public class GerenciadorArquivos {
 
