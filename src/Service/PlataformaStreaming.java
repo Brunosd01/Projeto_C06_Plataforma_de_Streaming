@@ -26,7 +26,7 @@ public class PlataformaStreaming {
         if (u != null && u.autenticar(senha)) {
             return u;
         }
-        return null; // Ou lançar a sua LoginInvalidoException
+        return null;
     }
 
     public void cadastrarUsuario(Usuario u) {
