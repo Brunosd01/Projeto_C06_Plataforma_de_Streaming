@@ -4,6 +4,7 @@ import Usuarios.Usuario;
 import java.util.Collection;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PlataformaStreaming {
@@ -19,6 +20,15 @@ public class PlataformaStreaming {
 
     public void iniciar() {
         System.out.println("Iniciando a Plataforma de Streaming...");
+
+        // 1. Carrega o catálogo do arquivo
+        this.catalogo = arquivos.carregarCatalogo();
+
+        // 2. Carrega a lista de usuários e insere no HashMap pela chave do e-mail
+        List<Usuario> listaCarregada = arquivos.carregarUsuarios(this.catalogo);
+        for (Usuario u : listaCarregada) {
+            this.usuarios.put(u.getEmail(), u);
+        }
     }
 
     public Usuario login(String email, String senha) {

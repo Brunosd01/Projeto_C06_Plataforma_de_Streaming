@@ -15,9 +15,7 @@ public abstract class Usuario {
         this.senha = senha;
     }
 
-    // a IA que fez, coloquei so pra fazer o código rodar
     public boolean autenticar(String senhaDigitada) {
-        // Compara a senha salva no objeto com a senha que o usuário digitou no login
         return this.senha.equals(senhaDigitada);
     }
 

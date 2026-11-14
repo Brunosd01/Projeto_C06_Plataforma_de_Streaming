@@ -26,6 +26,8 @@ public abstract class Conteudo implements Avaliavel{
         return this.id; // Retorne a variável que guarda o ID
     }
 
+    public abstract void exibirDetalhes();
+
     @Override
     public void avaliar(double nota){
         notaMedia = ((notaMedia * totalAvaliacoes) + nota) / (totalAvaliacoes + 1);

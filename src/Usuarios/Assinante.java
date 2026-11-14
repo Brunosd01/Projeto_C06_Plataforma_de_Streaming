@@ -9,31 +9,24 @@ import java.util.Scanner;
 
 public class Assinante extends Usuario {
 
-    private List<Conteudo> minhaLista;
-    private List<Conteudo> historico;
-
-    // Construtor
     public Assinante(String nome, String email, String senha) {
         super(nome, email, senha);
-
-        this.minhaLista = new ArrayList<>();
-        this.historico = new ArrayList<>();
     }
 
-    // Único exibirMenu correto, com a marcação @Override e recebendo o Scanner
     @Override
     public void exibirMenu(Catalogo catalogo, Scanner scanner) {
         int opcao;
         do {
             System.out.println("\n=== PAINEL DO ASSINANTE ===");
             System.out.println("Olá, " + this.nome);
-            System.out.println("1. Ver Catálogo de Filmes");
-            System.out.println("2. Ver Minha Lista");
+            System.out.println("1. Ver Catálogo Completo");
+            System.out.println("2. Ver Detalhes de uma Mídia (Filme/Série)");
+            System.out.println("3. Ver Minha Lista");
             System.out.println("0. Fazer Logout");
             System.out.print("Escolha uma opção: ");
 
             opcao = scanner.nextInt();
-            scanner.nextLine(); // limpar buffer do teclado
+            scanner.nextLine(); // Limpar buffer
 
             switch (opcao) {
                 case 1:
@@ -42,33 +35,27 @@ public class Assinante extends Usuario {
                         System.out.println("ID: " + c.getId() + " | " + c.getTitulo() + " (" + c.getAnoLancamento() + ")");
                     }
                     break;
+
                 case 2:
-                    System.out.println("\n--- MINHA LISTA ---");
-                    if (minhaLista.isEmpty()) {
-                        System.out.println("Sua lista de favoritos está vazia.");
+                    System.out.print("\nDigite o ID da mídia que deseja ver os detalhes: ");
+                    int idBusca = scanner.nextInt();
+                    scanner.nextLine(); // Limpar buffer
+
+                    Conteudo midia = catalogo.buscarPorId(idBusca);
+                    if (midia != null) {
+                        // O polimorfismo chama o exibirDetalhes() específico (Filme ou Serie)
+                        midia.exibirDetalhes();
                     } else {
-                        for (Conteudo c : minhaLista) {
-                            System.out.println("- " + c.getTitulo());
-                        }
+                        System.out.println("Conteúdo com ID " + idBusca + " não foi encontrado.");
                     }
                     break;
                 case 0:
                     System.out.println("Fazendo logout...");
                     break;
+
                 default:
                     System.out.println("Opção inválida.");
             }
         } while (opcao != 0);
     }
-
-    // Metodos da classe Assinante
-    public void adicionarNaLista(Conteudo conteudo){
-        minhaLista.add(conteudo);
-        System.out.println("Filme adicionado na lista");
-    }
-
-    public void adicionarAoHistorico(Conteudo conteudo){}
-
-    public void assistir(Conteudo conteudo){}
-
 }

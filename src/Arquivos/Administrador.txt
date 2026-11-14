@@ -1,2 +1,3 @@
 Chefao;admin@plataforma.com;senha123
+teste;t;1
 Diretoria;diretor@plataforma.com;admin456

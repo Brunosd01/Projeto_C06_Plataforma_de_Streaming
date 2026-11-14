@@ -1,3 +1,4 @@
+import Conteudos.Conteudo;
 import Service.PlataformaStreaming;
 import Usuarios.Assinante;
 import Usuarios.Usuario;
@@ -15,6 +16,7 @@ public class Main {
             System.out.println("\n=== PLATAFORMA DE STREAMING ===");
             System.out.println("1. Cadastrar novo Usuário");
             System.out.println("2. Fazer Login");
+            System.out.println("3. Ver Detalhes de um Conteúdo");
             System.out.println("0. Sair e Salvar");
             System.out.print("Escolha uma opção: ");
 
@@ -48,8 +50,22 @@ public class Main {
 
                     if (usuarioLogado != null) {
                         System.out.println("Login realizado com sucesso! Bem-vindo(a).");
+                        // ADICIONE ESTA LINHA:
+                        usuarioLogado.exibirMenu(plataforma.getCatalogo(), scanner);
                     } else {
                         System.out.println("Erro: Email ou senha incorretos!");
+                    }
+                    break;
+                case 3: // BLOCO ADICIONADO PARA BUSCA DIRETA
+                    System.out.print("\nDigite o ID do conteúdo que deseja visualizar: ");
+                    int idBusca = scanner.nextInt();
+                    scanner.nextLine(); // Limpar buffer do teclado
+
+                    Conteudo conteudo = plataforma.getCatalogo().buscarPorId(idBusca);
+                    if (conteudo != null) {
+                        conteudo.exibirDetalhes();
+                    } else {
+                        System.out.println("Conteúdo com ID " + idBusca + " não encontrado.");
                     }
                     break;
 
