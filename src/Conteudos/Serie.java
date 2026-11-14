@@ -65,10 +65,6 @@ public class Serie extends Conteudo {
         return temporadas;
     }
 
-    public void setTemporadas(int temporadas) {
-        this.temporadas = temporadas;
-    }
-
     public List<Episodio> getEpisodios() {
         return episodios;
     }

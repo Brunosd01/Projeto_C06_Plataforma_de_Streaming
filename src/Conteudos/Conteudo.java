@@ -39,47 +39,15 @@ public abstract class Conteudo implements Avaliavel{
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
     public String getGenero() {
         return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
     }
 
     public int getAnoLancamento() {
         return anoLancamento;
     }
 
-    public void setAnoLancamento(int anoLancamento) {
-        this.anoLancamento = anoLancamento;
-    }
-
     public String getDiretor() {
         return diretor;
-    }
-
-    public void setDiretor(String diretor) {
-        this.diretor = diretor;
-    }
-
-    public double getNotaMedia() {
-        return notaMedia;
-    }
-
-    public void setNotaMedia(double notaMedia) {
-        this.notaMedia = notaMedia;
-    }
-
-    public int getTotalAvaliacoes() {
-        return totalAvaliacoes;
-    }
-
-    public void setTotalAvaliacoes(int totalAvaliacoes) {
-        this.totalAvaliacoes = totalAvaliacoes;
     }
 }

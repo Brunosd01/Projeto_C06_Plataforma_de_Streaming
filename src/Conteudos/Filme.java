@@ -25,8 +25,4 @@ public class Filme extends Conteudo{
     public int getDuracaoMinutos() {
         return duracaoMinutos;
     }
-
-    public void setDuracaoMinutos(int duracaoMinutos) {
-        this.duracaoMinutos = duracaoMinutos;
-    }
 }

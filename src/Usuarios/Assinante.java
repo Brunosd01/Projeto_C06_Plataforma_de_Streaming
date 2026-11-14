@@ -4,8 +4,6 @@ import Conteudos.Catalogo;
 import Conteudos.Conteudo;
 import Exception.ConteudoNaoEncontradoException;
 import java.util.InputMismatchException;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Assinante extends Usuario {

@@ -20,8 +20,4 @@ public class Episodio {
     public int getDuracaoMinutos() {
         return duracaoMinutos;
     }
-
-    public void setDuracaoMinutos(int duracaoMinutos) {
-        this.duracaoMinutos = duracaoMinutos;
-    }
 }

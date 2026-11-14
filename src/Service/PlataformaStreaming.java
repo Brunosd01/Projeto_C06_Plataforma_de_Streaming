@@ -3,7 +3,6 @@ import Conteudos.Catalogo;
 import Usuarios.Usuario;
 import Exception.CadastroInvalidoException;
 import Exception.LoginInvalidoException;
-import java.util.Collection;
 
 import java.util.HashMap;
 import java.util.List;

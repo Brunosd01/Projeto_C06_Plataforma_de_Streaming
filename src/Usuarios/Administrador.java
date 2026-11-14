@@ -18,7 +18,6 @@ public class Administrador extends Usuario {
         super(nome, email, senha);
     }
 
-    // Método para cadastrar Filme
     public void cadastrarFilme(Catalogo catalogo, Scanner scanner) {
         System.out.println("\n--- CADASTRAR NOVO FILME ---");
         try {
@@ -59,7 +58,6 @@ public class Administrador extends Usuario {
         }
     }
 
-    // Método para cadastrar Série exclusivamente de forma manual
     public void cadastrarSerie(Catalogo catalogo, Scanner scanner) {
         System.out.println("\n--- CADASTRAR NOVA SÉRIE ---");
         try {
@@ -127,7 +125,6 @@ public class Administrador extends Usuario {
         }
     }
 
-    // Método para remover conteúdo por ID
     public void removerConteudo(Catalogo catalogo, Scanner scanner) {
         System.out.println("\n--- REMOVER CONTEÚDO ---");
         System.out.print("Digite o ID do conteúdo que deseja remover: ");
