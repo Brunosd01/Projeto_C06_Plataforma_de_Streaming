@@ -8,8 +8,11 @@ import Exception.CadastroInvalidoException;
 import Exception.ConteudoNaoEncontradoException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import Service.GerenciadorArquivos;
 
 public class Administrador extends Usuario {
+
+    private GerenciadorArquivos arquivos = new GerenciadorArquivos();
 
     public Administrador(String nome, String email, String senha) {
         super(nome, email, senha);
@@ -47,6 +50,7 @@ public class Administrador extends Usuario {
 
             Filme novoFilme = new Filme(titulo, genero, ano, diretor, duracao);
             catalogo.adicionar(novoFilme);
+            arquivos.salvarCatalogo(catalogo);
             System.out.println("Filme cadastrado com sucesso!");
         } catch (CadastroInvalidoException e) {
             System.out.println(e.getMessage());
@@ -114,6 +118,7 @@ public class Administrador extends Usuario {
             }
 
             catalogo.adicionar(novaSerie);
+            arquivos.salvarCatalogo(catalogo);
             System.out.println("Série cadastrada com sucesso!");
         } catch (CadastroInvalidoException e) {
             System.out.println(e.getMessage());
@@ -132,6 +137,7 @@ public class Administrador extends Usuario {
             scanner.nextLine();
 
             catalogo.remover(id);
+            arquivos.salvarCatalogo(catalogo);
         } catch (InputMismatchException e) {
             scanner.nextLine();
             System.out.println("Erro: ID incorreta.");
