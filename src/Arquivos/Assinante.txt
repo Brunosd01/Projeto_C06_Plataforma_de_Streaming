@@ -1,1 +1,2 @@
+Gabriel;gabriel@email.com;123456
 bruno;bruno@gmail.com;bruno123

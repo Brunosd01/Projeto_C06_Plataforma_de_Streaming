@@ -4,6 +4,9 @@ import Conteudos.Catalogo;
 import Conteudos.Conteudo;
 import Conteudos.Filme;
 import Conteudos.Serie;
+import Exception.CadastroInvalidoException;
+import Exception.ConteudoNaoEncontradoException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Administrador extends Usuario {
@@ -15,80 +18,126 @@ public class Administrador extends Usuario {
     // Método para cadastrar Filme
     public void cadastrarFilme(Catalogo catalogo, Scanner scanner) {
         System.out.println("\n--- CADASTRAR NOVO FILME ---");
-        System.out.print("Título: ");
-        String titulo = scanner.nextLine();
+        try {
+            System.out.print("Título: ");
+            String titulo = scanner.nextLine();
 
-        System.out.print("Gênero: ");
-        String genero = scanner.nextLine();
+            System.out.print("Gênero: ");
+            String genero = scanner.nextLine();
 
-        System.out.print("Ano de Lançamento: ");
-        int ano = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer do teclado
+            System.out.print("Ano de Lançamento: ");
+            String anoStr = scanner.nextLine();
 
-        System.out.print("Diretor: ");
-        String diretor = scanner.nextLine();
+            System.out.print("Diretor: ");
+            String diretor = scanner.nextLine();
 
-        System.out.print("Duração (em minutos): ");
-        int duracao = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer do teclado
+            System.out.print("Duração (em minutos): ");
+            String duracaoStr = scanner.nextLine();
 
-        Filme novoFilme = new Filme(titulo, genero, ano, diretor, duracao);
-        catalogo.adicionar(novoFilme);
-        System.out.println("Filme cadastrado com sucesso!");
+            if (titulo.isBlank() || genero.isBlank() || anoStr.isBlank() || diretor.isBlank() || duracaoStr.isBlank()) {
+                throw new CadastroInvalidoException("Erro: Todos os campos do filme devem ser preenchidos.");
+            }
+
+            int ano = Integer.parseInt(anoStr.trim());
+            int duracao = Integer.parseInt(duracaoStr.trim());
+
+            if (ano <= 0 || duracao <= 0) {
+                throw new CadastroInvalidoException("Erro: Valor de ano e duração errados.");
+            }
+
+            Filme novoFilme = new Filme(titulo, genero, ano, diretor, duracao);
+            catalogo.adicionar(novoFilme);
+            System.out.println("Filme cadastrado com sucesso!");
+        } catch (CadastroInvalidoException e) {
+            System.out.println(e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Valor de ano e duração errados.");
+        }
     }
 
     // Método para cadastrar Série exclusivamente de forma manual
     public void cadastrarSerie(Catalogo catalogo, Scanner scanner) {
         System.out.println("\n--- CADASTRAR NOVA SÉRIE ---");
-        System.out.print("Título da Série: ");
-        String titulo = scanner.nextLine();
+        try {
+            System.out.print("Título da Série: ");
+            String titulo = scanner.nextLine();
 
-        System.out.print("Gênero: ");
-        String genero = scanner.nextLine();
+            System.out.print("Gênero: ");
+            String genero = scanner.nextLine();
 
-        System.out.print("Ano de Lançamento: ");
-        int ano = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer do teclado
+            System.out.print("Ano de Lançamento: ");
+            String anoStr = scanner.nextLine();
 
-        System.out.print("Diretor: ");
-        String diretor = scanner.nextLine();
+            System.out.print("Diretor: ");
+            String diretor = scanner.nextLine();
 
-        System.out.print("Quantidade de Temporadas: ");
-        int temporadas = scanner.nextInt();
+            System.out.print("Quantidade de Temporadas: ");
+            String temporadasStr = scanner.nextLine();
 
-        System.out.print("Quantidade Total de Episódios a cadastrar: ");
-        int totalEpisodios = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer do teclado
+            System.out.print("Quantidade Total de Episódios a cadastrar: ");
+            String totalEpisodiosStr = scanner.nextLine();
 
-        // Instancia a série sem episódios pré-gerados
-        Serie novaSerie = new Serie(titulo, genero, ano, diretor, temporadas, 0, 0);
+            if (titulo.isBlank() || genero.isBlank() || anoStr.isBlank() || diretor.isBlank() || temporadasStr.isBlank() || totalEpisodiosStr.isBlank()) {
+                throw new CadastroInvalidoException("Erro: Todos os campos da série devem ser preenchidos.");
+            }
 
-        // Solicita o título e a duração de cada episódio individualmente
-        for (int i = 1; i <= totalEpisodios; i++) {
-            System.out.println("\n-> Episódio " + i + ":");
-            System.out.print("  Título do Episódio: ");
-            String tituloEp = scanner.nextLine();
+            int ano = Integer.parseInt(anoStr.trim());
+            int temporadas = Integer.parseInt(temporadasStr.trim());
+            int totalEpisodios = Integer.parseInt(totalEpisodiosStr.trim());
 
-            System.out.print("  Duração (em minutos): ");
-            int duracaoEp = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer do teclado
+            if (ano <= 0 || temporadas <= 0 || totalEpisodios <= 0) {
+                throw new CadastroInvalidoException("Erro: Valor de ano, temporada e duração errados.");
+            }
 
-            // Adiciona o episódio à série garantindo a Composição
-            novaSerie.adicionarEpisodio(tituloEp, duracaoEp);
+            // Instancia a série sem episódios pré-gerados
+            Serie novaSerie = new Serie(titulo, genero, ano, diretor, temporadas, 0, 0);
+
+            // Solicita o título e a duração de cada episódio individualmente
+            for (int i = 1; i <= totalEpisodios; i++) {
+                System.out.println("\n-> Episódio " + i + ":");
+                System.out.print("  Título do Episódio: ");
+                String tituloEp = scanner.nextLine();
+
+                System.out.print("  Duração (em minutos): ");
+                String duracaoEpStr = scanner.nextLine();
+
+                if (tituloEp.isBlank() || duracaoEpStr.isBlank()) {
+                    throw new CadastroInvalidoException("Erro: Todos os campos do episódio devem ser preenchidos.");
+                }
+
+                int duracaoEp = Integer.parseInt(duracaoEpStr.trim());
+                if (duracaoEp <= 0) {
+                    throw new CadastroInvalidoException("Erro: Duração da temporada errado.");
+                }
+
+                novaSerie.adicionarEpisodio(tituloEp, duracaoEp);
+            }
+
+            catalogo.adicionar(novaSerie);
+            System.out.println("Série cadastrada com sucesso!");
+        } catch (CadastroInvalidoException e) {
+            System.out.println(e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Todos os campos devem ser preenchidos.");
         }
-
-        catalogo.adicionar(novaSerie);
-        System.out.println("Série cadastrada com sucesso!");
     }
 
     // Método para remover conteúdo por ID
     public void removerConteudo(Catalogo catalogo, Scanner scanner) {
         System.out.println("\n--- REMOVER CONTEÚDO ---");
         System.out.print("Digite o ID do conteúdo que deseja remover: ");
-        int id = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer do teclado
 
-        catalogo.remover(id);
+        try {
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+            catalogo.remover(id);
+        } catch (InputMismatchException e) {
+            scanner.nextLine();
+            System.out.println("Erro: ID incorreta.");
+        } catch (ConteudoNaoEncontradoException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -103,8 +152,13 @@ public class Administrador extends Usuario {
             System.out.println("0. Fazer Logout");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer do teclado
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e){
+                scanner.nextLine();
+                opcao = -1;
+            }
 
             switch (opcao) {
                 case 1:
@@ -113,8 +167,14 @@ public class Administrador extends Usuario {
                         System.out.println("\nDigite 1 para cadastrar um Filme");
                         System.out.println("Digite 2 para cadastrar uma Série");
                         System.out.print("Opção: ");
-                        tipoConteudo = scanner.nextInt();
-                        scanner.nextLine(); // Limpar buffer do teclado
+
+                        try {
+                            tipoConteudo = scanner.nextInt();
+                            scanner.nextLine();
+                        } catch (InputMismatchException e){
+                            scanner.nextLine();
+                            tipoConteudo = -1;
+                        }
 
                         if (tipoConteudo == 1) {
                             cadastrarFilme(catalogo, scanner);

@@ -1,6 +1,8 @@
 package Service;
 import Conteudos.Catalogo;
 import Usuarios.Usuario;
+import Exception.CadastroInvalidoException;
+import Exception.LoginInvalidoException;
 import java.util.Collection;
 
 import java.util.HashMap;
@@ -31,15 +33,22 @@ public class PlataformaStreaming {
         }
     }
 
-    public Usuario login(String email, String senha) {
+    public Usuario login(String email, String senha) throws LoginInvalidoException {
         Usuario u = usuarios.get(email);
         if (u != null && u.autenticar(senha)) {
             return u;
         }
-        return null;
+        throw new LoginInvalidoException("Erro: Email ou senha incorretos!");
     }
 
-    public void cadastrarUsuario(Usuario u) {
+    public void cadastrarUsuario(Usuario u) throws CadastroInvalidoException {
+        if(u.getNome().isBlank() || u.getEmail().isBlank() || u.getSenha().isBlank()){
+            throw new CadastroInvalidoException("Erro: Todos os campos devem ser preenchidos.");
+        }
+        if (this.usuarios.containsKey(u.getEmail())) {
+            throw new CadastroInvalidoException("Erro: Email já cadastrado.");
+        }
+
         this.usuarios.put(u.getEmail(), u);
         this.arquivos.salvarUsuarios(this.usuarios.values());
     }

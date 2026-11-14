@@ -2,7 +2,8 @@ package Usuarios;
 
 import Conteudos.Catalogo;
 import Conteudos.Conteudo;
-
+import Exception.ConteudoNaoEncontradoException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -25,8 +26,13 @@ public class Assinante extends Usuario {
             System.out.println("0. Fazer Logout");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e){
+                scanner.nextLine();
+                opcao = -1;
+            }
 
             switch (opcao) {
                 case 1:
@@ -38,15 +44,18 @@ public class Assinante extends Usuario {
 
                 case 2:
                     System.out.print("\nDigite o ID da mídia que deseja ver os detalhes: ");
-                    int idBusca = scanner.nextInt();
-                    scanner.nextLine(); // Limpar buffer
 
-                    Conteudo midia = catalogo.buscarPorId(idBusca);
-                    if (midia != null) {
-                        // O polimorfismo chama o exibirDetalhes() específico (Filme ou Serie)
+                    try {
+                        int idBusca = scanner.nextInt();
+                        scanner.nextLine(); // Limpar buffer
+
+                        Conteudo midia = catalogo.buscarPorId(idBusca);
                         midia.exibirDetalhes();
-                    } else {
-                        System.out.println("Conteúdo com ID " + idBusca + " não foi encontrado.");
+                    } catch (InputMismatchException e) {
+                        scanner.nextLine();
+                        System.out.println("Erro: ID incorreta.");
+                    } catch (ConteudoNaoEncontradoException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case 0:

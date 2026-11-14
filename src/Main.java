@@ -3,6 +3,10 @@ import Service.PlataformaStreaming;
 import Usuarios.Assinante;
 import Usuarios.Usuario;
 import java.util.Scanner;
+import java.util.InputMismatchException;
+import Exception.ConteudoNaoEncontradoException;
+import Exception.LoginInvalidoException;
+import Exception.CadastroInvalidoException;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,8 +24,13 @@ public class Main {
             System.out.println("0. Sair e Salvar");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e){
+                scanner.nextLine();
+                opcao = -1;
+            }
 
             switch (opcao) {
                 case 1:
@@ -33,10 +42,13 @@ public class Main {
                     System.out.print("Senha: ");
                     String senha = scanner.nextLine();
 
-                    Usuario novoAssinante = new Assinante(nome, email, senha);
-                    plataforma.cadastrarUsuario(novoAssinante);
-
-                    System.out.println("Usuário cadastrado com sucesso!");
+                    try {
+                        Usuario novoAssinante = new Assinante(nome, email, senha);
+                        plataforma.cadastrarUsuario(novoAssinante);
+                        System.out.println("Usuário cadastrado com sucesso!");
+                    } catch (CadastroInvalidoException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case 2:
@@ -46,26 +58,28 @@ public class Main {
                     System.out.print("Senha: ");
                     String loginSenha = scanner.nextLine();
 
-                    Usuario usuarioLogado = plataforma.login(loginEmail, loginSenha);
-
-                    if (usuarioLogado != null) {
-                        System.out.println("Login realizado com sucesso! Bem-vindo(a).");
-                        // ADICIONE ESTA LINHA:
+                    try {
+                        Usuario usuarioLogado = plataforma.login(loginEmail, loginSenha);
+                        System.out.println("Login realizado com sucesso. Bem-vindo.");
                         usuarioLogado.exibirMenu(plataforma.getCatalogo(), scanner);
-                    } else {
-                        System.out.println("Erro: Email ou senha incorretos!");
+                    } catch (LoginInvalidoException e){
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case 3: // BLOCO ADICIONADO PARA BUSCA DIRETA
                     System.out.print("\nDigite o ID do conteúdo que deseja visualizar: ");
-                    int idBusca = scanner.nextInt();
-                    scanner.nextLine(); // Limpar buffer do teclado
 
-                    Conteudo conteudo = plataforma.getCatalogo().buscarPorId(idBusca);
-                    if (conteudo != null) {
+                    try {
+                        int idBusca = scanner.nextInt();
+                        scanner.nextLine(); // Limpar buffer do teclado
+
+                        Conteudo conteudo = plataforma.getCatalogo().buscarPorId(idBusca);
                         conteudo.exibirDetalhes();
-                    } else {
-                        System.out.println("Conteúdo com ID " + idBusca + " não encontrado.");
+                    } catch (InputMismatchException e){
+                        scanner.nextLine();
+                        System.out.println("Erro: ID incorreta.");
+                    } catch (ConteudoNaoEncontradoException e){
+                        System.out.println(e.getMessage());
                     }
                     break;
 
