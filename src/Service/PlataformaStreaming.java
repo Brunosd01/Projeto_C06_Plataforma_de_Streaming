@@ -41,6 +41,7 @@ public class PlataformaStreaming {
 
     public void cadastrarUsuario(Usuario u) {
         this.usuarios.put(u.getEmail(), u);
+        this.arquivos.salvarUsuarios(this.usuarios.values());
     }
 
     public void encerrar() {
