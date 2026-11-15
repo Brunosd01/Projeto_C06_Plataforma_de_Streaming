@@ -50,6 +50,19 @@ public class Serie extends Conteudo {
         System.out.println("===================================");
     }
 
+    @Override
+    public void reproduzir() {
+        System.out.println("\n📺 Iniciando a série '" + this.titulo + "':");
+        if (this.episodios.isEmpty()) {
+            System.out.println(" Nenhum episódio disponível para reprodução.");
+        } else {
+            for (int i = 0; i < this.episodios.size(); i++) {
+                Episodio ep = this.episodios.get(i);
+                System.out.println(" Reproduzindo Episódio " + (i + 1) + ": " + ep.getTituloEpisodio() + " (" + ep.getDuracaoMinutos() + " min)");
+            }
+        }
+    }
+
     public int getTemporadas() {
         return temporadas;
     }

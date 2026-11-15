@@ -9,7 +9,6 @@ import Exception.ConteudoNaoEncontradoException;
 import Usuarios.Administrador;
 import Usuarios.Assinante;
 import Usuarios.Usuario;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -190,8 +189,17 @@ public class GerenciadorArquivos {
                     }
                 }
                 String idsFinal = idsStr.length() > 0 ? idsStr.toString() : "SEM_LISTA";
+                StringBuilder histStr = new StringBuilder();
+                List<Conteudo> hist = ass.getHistorico();
+                for (int i = 0; i < hist.size(); i++) {
+                    histStr.append(hist.get(i).getId());
+                    if (i < hist.size() - 1) {
+                        histStr.append(",");
+                    }
+                }
+                String histFinal = histStr.length() > 0 ? histStr.toString() : "SEM_HISTORICO";
 
-                String linha = ass.getNome() + ";" + ass.getEmail() + ";" + ass.getSenha() + ";" + idsFinal;
+                String linha = ass.getNome() + ";" + ass.getEmail() + ";" + ass.getSenha() + ";" + idsFinal + ";" + histFinal;
                 linhasAssinantes.add(linha);
             } else if (u instanceof Administrador) {
                 String linha = u.getNome() + ";" + u.getEmail() + ";" + u.getSenha();
@@ -231,6 +239,25 @@ public class GerenciadorArquivos {
                                         Conteudo conteudo = catalogo.buscarPorId(id);
                                         if (conteudo != null) {
                                             ass.adicionarNaLista(conteudo);
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        // Ignora falhas de formatação numérica no arquivo
+                                    } catch (ConteudoNaoEncontradoException e) {
+                                        // Ignora caso o conteúdo tenha sido removido do catálogo
+                                    }
+                                }
+                            }
+                        }
+                        if (dados.length >= 5) {
+                            String histStr = dados[4].trim();
+                            if (!histStr.equalsIgnoreCase("SEM_HISTORICO")) {
+                                String[] histArray = histStr.split(",");
+                                for (String idTxt : histArray) {
+                                    try {
+                                        int id = Integer.parseInt(idTxt.trim());
+                                        Conteudo conteudo = catalogo.buscarPorId(id);
+                                        if (conteudo != null) {
+                                            ass.adicionarAoHistorico(conteudo);
                                         }
                                     } catch (NumberFormatException e) {
                                         // Ignora falhas de formatação numérica no arquivo

@@ -1,7 +1,9 @@
+import Exception.CadastroInvalidoException;
 import Exception.LoginInvalidoException;
 import Service.PlataformaStreaming;
 import Usuarios.Assinante;
 import Usuarios.Usuario;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -20,8 +22,13 @@ public class Main {
             System.out.println("0. Sair e Salvar");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                scanner.nextLine();
+                opcao = -1;
+            }
 
             switch (opcao) {
                 case 1:
@@ -33,9 +40,13 @@ public class Main {
                     System.out.print("Senha: ");
                     String senha = scanner.nextLine();
 
-                    Usuario novoAssinante = new Assinante(nome, email, senha);
-                    plataforma.cadastrarUsuario(novoAssinante);
-                    System.out.println("Usuário cadastrado com sucesso!");
+                    try {
+                        Usuario novoAssinante = new Assinante(nome, email, senha);
+                        plataforma.cadastrarUsuario(novoAssinante);
+                        System.out.println("Usuário cadastrado com sucesso!");
+                    } catch (CadastroInvalidoException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case 2:
@@ -49,10 +60,9 @@ public class Main {
                     try {
                         Usuario usuarioLogado = plataforma.login(loginEmail, loginSenha);
                         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + usuarioLogado.getNome() + ".");
-                        // Executa o menu específico via Polimorfismo
                         usuarioLogado.exibirMenu(plataforma.getCatalogo(), scanner);
                     } catch (LoginInvalidoException e) {
-                        System.out.println("Erro no login: " + e.getMessage());
+                        System.out.println(e.getMessage());
                     }
                     break;
 

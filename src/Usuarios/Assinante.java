@@ -3,11 +3,13 @@ package Usuarios;
 import Conteudos.Catalogo;
 import Conteudos.Conteudo;
 import Exception.ConteudoNaoEncontradoException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Assinante extends Usuario {
+
     private List<Conteudo> minhaLista;
     private List<Conteudo> historico;
 
@@ -27,11 +29,18 @@ public class Assinante extends Usuario {
             System.out.println("2. Ver Minha Lista");
             System.out.println("3. Adicionar Conteúdo à Minha Lista");
             System.out.println("4. Ver Detalhes de um Conteúdo");
+            System.out.println("5. Assistir a um Conteúdo");
+            System.out.println("6. Ver Histórico de Assistidos");
             System.out.println("0. Fazer Logout");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine(); // Limpar buffer
+            } catch (InputMismatchException e) {
+                scanner.nextLine(); // Limpar entrada inválida do buffer
+                opcao = -1;
+            }
 
             switch (opcao) {
                 case 1:
@@ -48,14 +57,19 @@ public class Assinante extends Usuario {
                         System.out.println("1. Sim");
                         System.out.println("2. Não");
                         System.out.print("Escolha uma opção: ");
-                        int opAvaliar = scanner.nextInt();
-                        scanner.nextLine();
-
-                        if (opAvaliar == 1) {
-                            System.out.print("Digite uma nota de 0 a 5 para o catálogo: ");
-                            double notaCat = scanner.nextDouble();
+                        try {
+                            int opAvaliar = scanner.nextInt();
                             scanner.nextLine();
-                            catalogo.avaliar(notaCat);
+
+                            if (opAvaliar == 1) {
+                                System.out.print("Digite uma nota de 0 a 5 para o catálogo: ");
+                                double notaCat = scanner.nextDouble();
+                                scanner.nextLine();
+                                catalogo.avaliar(notaCat);
+                            }
+                        } catch (InputMismatchException e) {
+                            scanner.nextLine(); // Limpar entrada inválida do buffer
+                            System.out.println("Erro: Entrada inválida!");
                         }
                     }
                     break;
@@ -73,12 +87,15 @@ public class Assinante extends Usuario {
 
                 case 3:
                     System.out.print("Digite o ID do conteúdo que deseja adicionar à sua lista: ");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();
-
                     try {
+                        int id = scanner.nextInt();
+                        scanner.nextLine();
+
                         Conteudo encontrado = catalogo.buscarPorId(id);
                         adicionarNaLista(encontrado);
+                    } catch (InputMismatchException e) {
+                        scanner.nextLine(); // Limpar entrada inválida do buffer
+                        System.out.println("Erro: O ID deve ser um número inteiro.");
                     } catch (ConteudoNaoEncontradoException e) {
                         System.out.println("Erro: " + e.getMessage());
                     }
@@ -86,10 +103,10 @@ public class Assinante extends Usuario {
 
                 case 4:
                     System.out.print("Digite o ID do conteúdo que deseja ver os detalhes: ");
-                    int idDetalhe = scanner.nextInt();
-                    scanner.nextLine();
-
                     try {
+                        int idDetalhe = scanner.nextInt();
+                        scanner.nextLine();
+
                         Conteudo encontrado = catalogo.buscarPorId(idDetalhe);
                         encontrado.exibirDetalhes(); // Exibe informações e a média de avaliação do conteúdo
 
@@ -108,8 +125,38 @@ public class Assinante extends Usuario {
                             encontrado.avaliar(notaCont);
                             System.out.println("Avaliação do conteúdo registrada com sucesso!");
                         }
+                    } catch (InputMismatchException e) {
+                        scanner.nextLine(); // Limpar entrada inválida do buffer
+                        System.out.println("Erro: Entrada inválida!");
                     } catch (ConteudoNaoEncontradoException e) {
                         System.out.println("Erro: " + e.getMessage());
+                    }
+                    break;
+
+                case 5:
+                    System.out.print("Digite o ID do conteúdo que deseja assistir: ");
+                    try {
+                        int idAssistir = scanner.nextInt();
+                        scanner.nextLine();
+
+                        Conteudo encontrado = catalogo.buscarPorId(idAssistir);
+                        assistir(encontrado);
+                    } catch (InputMismatchException e) {
+                        scanner.nextLine(); // Limpar entrada inválida do buffer
+                        System.out.println("Erro: ID deve ser um número.");
+                    } catch (ConteudoNaoEncontradoException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
+                    break;
+
+                case 6:
+                    System.out.println("\n--- MEU HISTÓRICO DE ASSISTIDOS ---");
+                    if (historico.isEmpty()) {
+                        System.out.println("Você ainda não assistiu a nenhum conteúdo.");
+                    } else {
+                        for (Conteudo c : historico) {
+                            System.out.println("- " + c.getTitulo() + " (" + c.getAnoLancamento() + ")");
+                        }
                     }
                     break;
 
@@ -132,11 +179,25 @@ public class Assinante extends Usuario {
         }
     }
 
-    public void adicionarAoHistorico(Conteudo conteudo) {}
+    public void adicionarAoHistorico(Conteudo conteudo) {
+        if (conteudo != null && !historico.contains(conteudo)) {
+            historico.add(conteudo);
+        }
+    }
 
-    public void assistir(Conteudo conteudo) {}
+    public void assistir(Conteudo conteudo) {
+        if (conteudo != null) {
+            conteudo.reproduzir();
+            adicionarAoHistorico(conteudo);
+            System.out.println("Conteúdo registrado no seu histórico de assistidos!");
+        }
+    }
 
     public List<Conteudo> getMinhaLista() {
         return minhaLista;
+    }
+
+    public List<Conteudo> getHistorico() {
+        return historico;
     }
 }
