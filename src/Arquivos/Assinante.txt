@@ -1,4 +1,4 @@
-teste;tt;1;SEM_LISTA
-João Victor Fut;joao@gmail.com;joao123;2,7
-Gabriel;gabriel@email.com;123456;SEM_LISTA
-bruno;bruno@gmail.com;bruno123;SEM_LISTA
+teste;tt;1;SEM_LISTA;SEM_HISTORICO
+João Victor Fut;joao@gmail.com;joao123;2,7;SEM_HISTORICO
+Gabriel;gabriel@email.com;123456;SEM_LISTA;3
+bruno;bruno@gmail.com;bruno123;SEM_LISTA;SEM_HISTORICO

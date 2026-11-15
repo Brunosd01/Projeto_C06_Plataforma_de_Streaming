@@ -11,7 +11,7 @@ public class Filme extends Conteudo{
     @Override
     public void exibirDetalhes() {
         System.out.println("\n===================================");
-        System.out.println("🎬 FILME: " + this.titulo.toUpperCase());
+        System.out.println("FILME: " + this.titulo.toUpperCase());
         System.out.println("===================================");
         System.out.println("ID: " + this.id);
         System.out.println("Gênero: " + this.genero);
@@ -20,6 +20,11 @@ public class Filme extends Conteudo{
         System.out.println("Duração Total: " + this.duracaoMinutos + " minutos");
         System.out.println("Nota Média: " + (this.totalAvaliacoes > 0 ? String.format("%.1f", this.notaMedia) : "Sem avaliações"));
         System.out.println("===================================");
+    }
+
+    @Override
+    public void reproduzir() {
+        System.out.println("\nReproduzindo o filme '" + this.titulo + "' (" + this.duracaoMinutos + " min)!");
     }
 
     public int getDuracaoMinutos() {

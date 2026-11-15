@@ -1,5 +1,4 @@
 import Exception.CadastroInvalidoException;
-import Exception.ConteudoNaoEncontradoException;
 import Exception.LoginInvalidoException;
 import Service.PlataformaStreaming;
 import Usuarios.Assinante;
@@ -61,10 +60,9 @@ public class Main {
                     try {
                         Usuario usuarioLogado = plataforma.login(loginEmail, loginSenha);
                         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + usuarioLogado.getNome() + ".");
-                        // Executa o menu específico via Polimorfismo
                         usuarioLogado.exibirMenu(plataforma.getCatalogo(), scanner);
                     } catch (LoginInvalidoException e) {
-                        System.out.println("Erro no login: " + e.getMessage());
+                        System.out.println(e.getMessage());
                     }
                     break;
 

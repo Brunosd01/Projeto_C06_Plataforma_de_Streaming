@@ -1,9 +1,9 @@
 package Service;
+
 import Conteudos.Catalogo;
 import Usuarios.Usuario;
 import Exception.CadastroInvalidoException;
 import Exception.LoginInvalidoException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

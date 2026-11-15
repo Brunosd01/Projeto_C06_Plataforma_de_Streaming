@@ -71,4 +71,6 @@ public abstract class Conteudo implements Avaliavel {
     }
 
     public abstract void exibirDetalhes();
+
+    public abstract void reproduzir();
 }
