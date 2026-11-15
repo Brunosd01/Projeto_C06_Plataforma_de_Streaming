@@ -1,7 +1,6 @@
 package Usuarios;
 
 import Conteudos.Catalogo;
-
 import java.util.Scanner;
 
 public abstract class Usuario {
@@ -21,14 +20,13 @@ public abstract class Usuario {
 
     public abstract void exibirMenu(Catalogo catalogo, Scanner scanner);
 
+
     public String getEmail() {
         return email;
     }
-
     public String getSenha() {
         return senha;
     }
-
     public String getNome() {
         return nome;
     }

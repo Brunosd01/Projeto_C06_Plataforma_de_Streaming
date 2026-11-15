@@ -27,14 +27,6 @@ public class Catalogo implements Avaliavel {
         System.out.println("Obrigado! Sua avaliação para o catálogo foi registrada com sucesso.");
     }
 
-    public double getNotaMedia() {
-        return notaMedia;
-    }
-
-    public int getTotalAvaliacoes() {
-        return totalAvaliacoes;
-    }
-
     public void adicionar(Conteudo c) {
         this.conteudos.put(c.getId(), c);
     }
@@ -66,4 +58,11 @@ public class Catalogo implements Avaliavel {
         this.totalAvaliacoes = totalAvaliacoes;
     }
 
+    public double getNotaMedia() {
+        return notaMedia;
+    }
+
+    public int getTotalAvaliacoes() {
+        return totalAvaliacoes;
+    }
 }

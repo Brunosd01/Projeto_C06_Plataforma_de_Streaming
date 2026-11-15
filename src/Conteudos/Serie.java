@@ -21,19 +21,8 @@ public class Serie extends Conteudo {
         }
     }
 
-    // Método de Composição: Recebe apenas os dados e cria o Episodio internamente
     public void adicionarEpisodio(String tituloEpisodio, int duracaoMinutos) {
         this.episodios.add(new Episodio(tituloEpisodio, duracaoMinutos));
-    }
-
-    // Método para adicionar uma nova temporada garantindo o 'new' interno
-    public void adicionarTemporada(int quantidadeEpisodios, int duracaoMinutosEpisodio) {
-        this.temporadas++;
-        int numeroProximoEpisodio = this.episodios.size() + 1;
-        for (int i = 0; i < quantidadeEpisodios; i++) {
-            String tituloEpisodio = "Episódio " + (numeroProximoEpisodio + i);
-            this.episodios.add(new Episodio(tituloEpisodio, duracaoMinutosEpisodio));
-        }
     }
 
     @Override

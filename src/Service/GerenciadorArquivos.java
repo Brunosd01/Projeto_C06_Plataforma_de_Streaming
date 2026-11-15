@@ -36,8 +36,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // --- CATÁLOGO ---
-
+    //CATÁLOGO
     // --- SALVAR CATÁLOGO ---
     public void salvarCatalogo(Catalogo catalogo) {
         prepararDiretorio();
@@ -67,6 +66,7 @@ public class GerenciadorArquivos {
                         epsStr.append("|");
                     }
                 }
+
 
                 String listaEpisodiosFinal = epsStr.length() > 0 ? epsStr.toString() : "SEM_EPISODIOS";
 
@@ -169,8 +169,7 @@ public class GerenciadorArquivos {
         return cat;
     }
 
-    // --- USUÁRIOS ---
-
+    //USUÁRIOS
     public void salvarUsuarios(Collection<Usuario> usuarios) {
         prepararDiretorio();
 

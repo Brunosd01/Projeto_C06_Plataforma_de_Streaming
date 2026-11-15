@@ -24,7 +24,6 @@ public class PlataformaStreaming {
 
         // 1. Carrega o catálogo do arquivo
         this.catalogo = arquivos.carregarCatalogo();
-
         // 2. Carrega a lista de usuários e insere no HashMap pela chave do e-mail
         List<Usuario> listaCarregada = arquivos.carregarUsuarios(this.catalogo);
         for (Usuario u : listaCarregada) {

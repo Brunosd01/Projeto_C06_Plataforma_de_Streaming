@@ -32,7 +32,6 @@ public abstract class Conteudo implements Avaliavel {
         }
     }
 
-    // --- GETTERS E SETTERS ---
 
     public int getId() {
         return id;

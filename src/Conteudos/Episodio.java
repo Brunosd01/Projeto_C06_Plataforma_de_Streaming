@@ -13,10 +13,6 @@ public class Episodio {
         return tituloEpisodio;
     }
 
-    public void setTituloEpisodio(String tituloEpisodio) {
-        this.tituloEpisodio = tituloEpisodio;
-    }
-
     public int getDuracaoMinutos() {
         return duracaoMinutos;
     }
