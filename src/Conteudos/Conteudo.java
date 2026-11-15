@@ -22,6 +22,10 @@ public abstract class Conteudo implements Avaliavel {
         this.totalAvaliacoes = 0;
     }
 
+    public abstract void exibirDetalhes();
+
+    public abstract void reproduzir();
+
     @Override
     public void avaliar(double nota) {
         if (nota >= 0 && nota <= 5) {
@@ -68,8 +72,4 @@ public abstract class Conteudo implements Avaliavel {
     public void setTotalAvaliacoes(int totalAvaliacoes) {
         this.totalAvaliacoes = totalAvaliacoes;
     }
-
-    public abstract void exibirDetalhes();
-
-    public abstract void reproduzir();
 }
