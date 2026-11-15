@@ -1,2 +1,4 @@
-Gabriel;gabriel@email.com;123456
-bruno;bruno@gmail.com;bruno123
+teste;tt;1;SEM_LISTA
+João Victor Fut;joao@gmail.com;joao123;2,7
+Gabriel;gabriel@email.com;123456;SEM_LISTA
+bruno;bruno@gmail.com;bruno123;SEM_LISTA

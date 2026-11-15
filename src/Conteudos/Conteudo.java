@@ -1,6 +1,9 @@
 package Conteudos;
 
-public abstract class Conteudo implements Avaliavel{
+public abstract class Conteudo implements Avaliavel {
+
+    private static int contadorId = 1;
+
     protected int id;
     protected String titulo;
     protected String genero;
@@ -9,31 +12,31 @@ public abstract class Conteudo implements Avaliavel{
     protected double notaMedia;
     protected int totalAvaliacoes;
 
-    // 1. Criamos um contador estático que pertence à classe inteira
-    private static int contadorId = 1;
-
     public Conteudo(String titulo, String genero, int anoLancamento, String diretor) {
-        // 2. Toda vez que um Filme ou Série nascer, ele recebe o número atual e aumenta 1
-        this.id = contadorId++;
-
+        this.id = contadorId++; // Atribui o ID automático a cada novo conteúdo
         this.titulo = titulo;
         this.genero = genero;
         this.anoLancamento = anoLancamento;
         this.diretor = diretor;
+        this.notaMedia = 0.0;
+        this.totalAvaliacoes = 0;
     }
-
-    public int getId() {
-        return this.id; // Retorne a variável que guarda o ID
-    }
-
-    public abstract void exibirDetalhes();
 
     @Override
-    public void avaliar(double nota){
-        notaMedia = ((notaMedia * totalAvaliacoes) + nota) / (totalAvaliacoes + 1);
-        totalAvaliacoes++;
+    public void avaliar(double nota) {
+        if (nota >= 0 && nota <= 5) {
+            this.notaMedia = ((this.notaMedia * this.totalAvaliacoes) + nota) / (this.totalAvaliacoes + 1);
+            this.totalAvaliacoes++;
+        } else {
+            System.out.println("Nota inválida! Escolha um valor entre 0 e 5.");
+        }
     }
 
+    // --- GETTERS E SETTERS ---
+
+    public int getId() {
+        return id;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -50,4 +53,22 @@ public abstract class Conteudo implements Avaliavel{
     public String getDiretor() {
         return diretor;
     }
+
+    public double getNotaMedia() {
+        return notaMedia;
+    }
+
+    public void setNotaMedia(double notaMedia) {
+        this.notaMedia = notaMedia;
+    }
+
+    public int getTotalAvaliacoes() {
+        return totalAvaliacoes;
+    }
+
+    public void setTotalAvaliacoes(int totalAvaliacoes) {
+        this.totalAvaliacoes = totalAvaliacoes;
+    }
+
+    public abstract void exibirDetalhes();
 }

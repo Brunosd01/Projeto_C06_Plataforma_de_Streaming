@@ -2,12 +2,13 @@ package Service;
 
 import Conteudos.Catalogo;
 import Conteudos.Conteudo;
+import Conteudos.Episodio;
 import Conteudos.Filme;
 import Conteudos.Serie;
+import Exception.ConteudoNaoEncontradoException;
 import Usuarios.Administrador;
 import Usuarios.Assinante;
 import Usuarios.Usuario;
-import Conteudos.Episodio;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,11 +43,16 @@ public class GerenciadorArquivos {
         prepararDiretorio();
         List<String> linhas = new ArrayList<>();
 
+        // 1. Salva a avaliação geral do catálogo na primeira linha
+        linhas.add("CATALOGO_INFO;" + catalogo.getNotaMedia() + ";" + catalogo.getTotalAvaliacoes());
+
+        // 2. Salva todos os filmes e séries juntamente com suas avaliações
         for (Conteudo c : catalogo.listarTodos()) {
             if (c instanceof Filme) {
                 Filme f = (Filme) c;
                 String linha = "Filme;" + f.getTitulo() + ";" + f.getGenero() + ";"
-                        + f.getAnoLancamento() + ";" + f.getDiretor() + ";" + f.getDuracaoMinutos();
+                        + f.getAnoLancamento() + ";" + f.getDiretor() + ";" + f.getDuracaoMinutos()
+                        + ";" + f.getNotaMedia() + ";" + f.getTotalAvaliacoes();
                 linhas.add(linha);
             } else if (c instanceof Serie) {
                 Serie s = (Serie) c;
@@ -66,7 +72,8 @@ public class GerenciadorArquivos {
 
                 String linha = "Serie;" + s.getTitulo() + ";" + s.getGenero() + ";"
                         + s.getAnoLancamento() + ";" + s.getDiretor() + ";"
-                        + s.getTemporadas() + ";" + listaEpisodiosFinal;
+                        + s.getTemporadas() + ";" + listaEpisodiosFinal
+                        + ";" + s.getNotaMedia() + ";" + s.getTotalAvaliacoes();
                 linhas.add(linha);
             }
         }
@@ -94,6 +101,18 @@ public class GerenciadorArquivos {
                 String[] dados = linha.split(";");
 
                 String tipo = dados[0].trim();
+
+                // Restaura as avaliações do Catálogo
+                if (tipo.equalsIgnoreCase("CATALOGO_INFO")) {
+                    if (dados.length >= 3) {
+                        double nota = Double.parseDouble(dados[1].trim());
+                        int total = Integer.parseInt(dados[2].trim());
+                        cat.setNotaMedia(nota);
+                        cat.setTotalAvaliacoes(total);
+                    }
+                    continue;
+                }
+
                 String titulo = dados[1].trim();
                 String genero = dados[2].trim();
                 int ano = Integer.parseInt(dados[3].trim());
@@ -102,6 +121,15 @@ public class GerenciadorArquivos {
                 if (tipo.equalsIgnoreCase("Filme")) {
                     int duracao = Integer.parseInt(dados[5].trim());
                     Filme f = new Filme(titulo, genero, ano, diretor, duracao);
+
+                    // Restaura a avaliação do filme se estiver salva no arquivo
+                    if (dados.length >= 8) {
+                        double nota = Double.parseDouble(dados[6].trim());
+                        int total = Integer.parseInt(dados[7].trim());
+                        f.setNotaMedia(nota);
+                        f.setTotalAvaliacoes(total);
+                    }
+
                     cat.adicionar(f);
                 } else if (tipo.equalsIgnoreCase("Serie")) {
                     int temporadas = Integer.parseInt(dados[5].trim());
@@ -122,6 +150,15 @@ public class GerenciadorArquivos {
                             }
                         }
                     }
+
+                    // Restaura a avaliação da série se estiver salva no arquivo
+                    if (dados.length >= 9) {
+                        double nota = Double.parseDouble(dados[7].trim());
+                        int total = Integer.parseInt(dados[8].trim());
+                        s.setNotaMedia(nota);
+                        s.setTotalAvaliacoes(total);
+                    }
+
                     cat.adicionar(s);
                 }
             }
@@ -131,6 +168,7 @@ public class GerenciadorArquivos {
 
         return cat;
     }
+
     // --- USUÁRIOS ---
 
     public void salvarUsuarios(Collection<Usuario> usuarios) {
@@ -140,11 +178,24 @@ public class GerenciadorArquivos {
         List<String> linhasAdmins = new ArrayList<>();
 
         for (Usuario u : usuarios) {
-            String linha = u.getNome() + ";" + u.getEmail() + ";" + u.getSenha();
-
             if (u instanceof Assinante) {
+                Assinante ass = (Assinante) u;
+
+                // Converte a lista de favoritos (minhaLista) em IDs separados por vírgula
+                StringBuilder idsStr = new StringBuilder();
+                List<Conteudo> lista = ass.getMinhaLista();
+                for (int i = 0; i < lista.size(); i++) {
+                    idsStr.append(lista.get(i).getId());
+                    if (i < lista.size() - 1) {
+                        idsStr.append(",");
+                    }
+                }
+                String idsFinal = idsStr.length() > 0 ? idsStr.toString() : "SEM_LISTA";
+
+                String linha = ass.getNome() + ";" + ass.getEmail() + ";" + ass.getSenha() + ";" + idsFinal;
                 linhasAssinantes.add(linha);
             } else if (u instanceof Administrador) {
+                String linha = u.getNome() + ";" + u.getEmail() + ";" + u.getSenha();
                 linhasAdmins.add(linha);
             }
         }
@@ -169,6 +220,27 @@ public class GerenciadorArquivos {
                     String[] dados = linha.split(";");
                     if (dados.length >= 3) {
                         Assinante ass = new Assinante(dados[0].trim(), dados[1].trim(), dados[2].trim());
+
+                        // Reconstrói a lista de favoritos do assinante a partir dos IDs salvos
+                        if (dados.length >= 4) {
+                            String idsStr = dados[3].trim();
+                            if (!idsStr.equalsIgnoreCase("SEM_LISTA")) {
+                                String[] idsArray = idsStr.split(",");
+                                for (String idTxt : idsArray) {
+                                    try {
+                                        int id = Integer.parseInt(idTxt.trim());
+                                        Conteudo conteudo = catalogo.buscarPorId(id);
+                                        if (conteudo != null) {
+                                            ass.adicionarNaLista(conteudo);
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        // Ignora falhas de formatação numérica no arquivo
+                                    } catch (ConteudoNaoEncontradoException e) {
+                                        // Ignora caso o conteúdo tenha sido removido do catálogo
+                                    }
+                                }
+                            }
+                        }
                         list.add(ass);
                     }
                 }

@@ -1,10 +1,11 @@
-Filme;Matrix;Ficção Científica;1999;Lilly e Lana Wachowski;136
-Filme;O Senhor dos Anéis: A Sociedade do Anel;Fantasia;2001;Peter Jackson;178
-Filme;Interestelar;Ficção Científica;2014;Christopher Nolan;169
-Filme;O Poderoso Chefão;Drama;1972;Francis Ford Coppola;175
-Filme;Vingadores: Ultimato;Ação;2019;Anthony e Joe Russo;181
-Filme;De Volta para o Futuro;Ficção Científica;1985;Robert Zemeckis;116
-Serie;Breaking Bad;Drama;2008;Vince Gilligan;5;Piloto,58|Cat's in the Bag...,48|And the Bag's in the River,48|Cancer Man,48
-Serie;Stranger Things;Ficção Científica;2016;Irmãos Duffer;4;O Desaparecimento de Will Byers,48|A Esquisita da Rua Maple,55|Holly Jolly,51
-Serie;Game of Thrones;Fantasia;2011;David Benioff e D. B. Weiss;8;O Inverno Está Chegando,62|A Estrada do Rei,56|Lord Snow,57
-Serie;Dark;Ficção Científica;2017;Baran bo Odar;3;Segredos,51|Segredos do Passado,44|Passado e Presente,45
+CATALOGO_INFO;4.5;2
+Filme;Matrix;Ficção Científica;1999;Lilly e Lana Wachowski;136;0.0;0
+Filme;O Senhor dos Anéis: A Sociedade do Anel;Fantasia;2001;Peter Jackson;178;0.0;0
+Filme;Interestelar;Ficção Científica;2014;Christopher Nolan;169;2.5;2
+Filme;O Poderoso Chefão;Drama;1972;Francis Ford Coppola;175;5.0;1
+Filme;Vingadores: Ultimato;Ação;2019;Anthony e Joe Russo;181;0.0;0
+Filme;De Volta para o Futuro;Ficção Científica;1985;Robert Zemeckis;116;0.0;0
+Serie;Breaking Bad;Drama;2008;Vince Gilligan;5;Piloto,58|Cat's in the Bag...,48|And the Bag's in the River,48|Cancer Man,48;5.0;1
+Serie;Stranger Things;Ficção Científica;2016;Irmãos Duffer;4;O Desaparecimento de Will Byers,48|A Esquisita da Rua Maple,55|Holly Jolly,51;0.0;0
+Serie;Game of Thrones;Fantasia;2011;David Benioff e D. B. Weiss;8;O Inverno Está Chegando,62|A Estrada do Rei,56|Lord Snow,57;0.0;0
+Serie;Dark;Ficção Científica;2017;Baran bo Odar;3;Segredos,51|Segredos do Passado,44|Passado e Presente,45;0.0;0

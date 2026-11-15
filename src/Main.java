@@ -1,18 +1,15 @@
-import Conteudos.Conteudo;
+import Exception.LoginInvalidoException;
 import Service.PlataformaStreaming;
 import Usuarios.Assinante;
 import Usuarios.Usuario;
 import java.util.Scanner;
-import java.util.InputMismatchException;
-import Exception.ConteudoNaoEncontradoException;
-import Exception.LoginInvalidoException;
-import Exception.CadastroInvalidoException;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         PlataformaStreaming plataforma = new PlataformaStreaming();
 
+        // Carrega dados salvos ao iniciar a plataforma
         plataforma.iniciar();
 
         int opcao;
@@ -20,17 +17,11 @@ public class Main {
             System.out.println("\n=== PLATAFORMA DE STREAMING ===");
             System.out.println("1. Cadastrar novo Usuário");
             System.out.println("2. Fazer Login");
-            System.out.println("3. Ver Detalhes de um Conteúdo");
             System.out.println("0. Sair e Salvar");
             System.out.print("Escolha uma opção: ");
 
-            try {
-                opcao = scanner.nextInt();
-                scanner.nextLine();
-            } catch (InputMismatchException e){
-                scanner.nextLine();
-                opcao = -1;
-            }
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpar buffer
 
             switch (opcao) {
                 case 1:
@@ -42,13 +33,9 @@ public class Main {
                     System.out.print("Senha: ");
                     String senha = scanner.nextLine();
 
-                    try {
-                        Usuario novoAssinante = new Assinante(nome, email, senha);
-                        plataforma.cadastrarUsuario(novoAssinante);
-                        System.out.println("Usuário cadastrado com sucesso!");
-                    } catch (CadastroInvalidoException e) {
-                        System.out.println(e.getMessage());
-                    }
+                    Usuario novoAssinante = new Assinante(nome, email, senha);
+                    plataforma.cadastrarUsuario(novoAssinante);
+                    System.out.println("Usuário cadastrado com sucesso!");
                     break;
 
                 case 2:
@@ -58,28 +45,14 @@ public class Main {
                     System.out.print("Senha: ");
                     String loginSenha = scanner.nextLine();
 
+                    // Tratamento da exceção verificada LoginInvalidoException
                     try {
                         Usuario usuarioLogado = plataforma.login(loginEmail, loginSenha);
-                        System.out.println("Login realizado com sucesso. Bem-vindo.");
+                        System.out.println("Login realizado com sucesso! Bem-vindo(a), " + usuarioLogado.getNome() + ".");
+                        // Executa o menu específico via Polimorfismo
                         usuarioLogado.exibirMenu(plataforma.getCatalogo(), scanner);
-                    } catch (LoginInvalidoException e){
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-                case 3: // BLOCO ADICIONADO PARA BUSCA DIRETA
-                    System.out.print("\nDigite o ID do conteúdo que deseja visualizar: ");
-
-                    try {
-                        int idBusca = scanner.nextInt();
-                        scanner.nextLine(); // Limpar buffer do teclado
-
-                        Conteudo conteudo = plataforma.getCatalogo().buscarPorId(idBusca);
-                        conteudo.exibirDetalhes();
-                    } catch (InputMismatchException e){
-                        scanner.nextLine();
-                        System.out.println("Erro: ID incorreta.");
-                    } catch (ConteudoNaoEncontradoException e){
-                        System.out.println(e.getMessage());
+                    } catch (LoginInvalidoException e) {
+                        System.out.println("Erro no login: " + e.getMessage());
                     }
                     break;
 
@@ -90,7 +63,6 @@ public class Main {
                 default:
                     System.out.println("Opção inválida! Tente novamente.");
             }
-
         } while (opcao != 0);
 
         scanner.close();
